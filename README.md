@@ -18,7 +18,36 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+`require 'open_ai_magic_gem'`
+
+```
+class FooFunction
+    include OpenAiMagicGem::Function
+
+    description "Function that do foo things"
+    parameter :start_date, :string, "Future start date of interest formatted as YYYY-MM-DD", required: true
+    parameter :end_date, :string, "Future end date of interest formatted as YYYY-MM-DD"
+
+    def call
+       print "Hello. You've requested #{parameters[:start_time]} and #{parameters[:end_time]}"
+    end
+end
+```
+
+```
+class BarFunction
+    include OpenAiMagicGem::Function
+
+    description "Function that do bar thing"
+end
+```
+
+```
+OpenAiMagicGem.functions_definitions
+OpenAiMagicGem.function("BarFunction").definition
+BarFunction.definition
+OpenAiMagicGem.call_function("FooFunction", { start_date: Date.today, end_date: Date.today + 2.days })
+```
 
 ## Development
 
