@@ -25,11 +25,11 @@ class FooFunction
     include OpenAiMagicGem::Function
 
     description "Function that do foo things"
-    parameter :start_date, :string, "Future start date of interest formatted as YYYY-MM-DD", required: true
-    parameter :end_date, :string, "Future end date of interest formatted as YYYY-MM-DD"
+    parameter :start_date, Date, "Future start date of interest formatted as YYYY-MM-DD", required: true
+    parameter :end_date, Date, "Future end date of interest formatted as YYYY-MM-DD"
 
     def call
-       print "Hello. You've requested #{parameters[:start_time]} and #{parameters[:end_time]}"
+       print "Hello. You've requested #{parameters[:start_date].to_s} and #{parameters[:end_date].to_s}"
     end
 end
 ```
@@ -44,9 +44,9 @@ end
 
 ```
 OpenAiMagicGem.functions_definitions
-OpenAiMagicGem.function("BarFunction").definition
+OpenAiMagicGem.function("bar_function").definition
 BarFunction.definition
-OpenAiMagicGem.call_function("FooFunction", start_date: Date.today, end_date: Date.today + 2.days)
+OpenAiMagicGem.call_function("foo_function", start_date: Date.today, end_date: Date.today + 2.days)
 ```
 
 ## Development
