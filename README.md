@@ -46,7 +46,7 @@ end
 OpenAiMagicGem.functions_definitions
 OpenAiMagicGem.function("BarFunction").definition
 BarFunction.definition
-OpenAiMagicGem.call_function("FooFunction", { start_date: Date.today, end_date: Date.today + 2.days })
+OpenAiMagicGem.call_function("FooFunction", start_date: Date.today, end_date: Date.today + 2.days)
 ```
 
 ## Development
