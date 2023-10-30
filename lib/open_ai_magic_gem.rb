@@ -10,10 +10,7 @@ module OpenAiMagicGem
   end
 
   def self.function(name)
-    function_class = functions[name]
-    raise OpenAiMagicGem::FunctionNameError.new("Unknown function class #{name}") unless function_class
-
-    function_class
+    functions[name] || raise OpenAiMagicGem::FunctionNameError.new("Unknown function class #{name}")
   end
 
   def self.functions_definitions
