@@ -54,13 +54,13 @@ module OpenAiMagicGem
     private
 
     def validate_function_arguments(args)
-      parameters = self.class.definition[:parameters]
+      function_params = self.class.definition[:parameters]
 
-      unless parameters[:required].all? { |param| args[param.to_sym] }
+      unless function_params[:required].all? { |param| args[param.to_sym] }
         raise ArgumentError, "Missing required argument"
       end
 
-      unless parameters[:properties].all? { |name, val| !args[name] || is_given_type(args[name], val[:type]) }
+      unless function_params[:properties].all? { |name, val| !args[name] || is_given_type(args[name], val[:type]) }
         raise ArgumentError, "Wrong argument type"
       end
     end
