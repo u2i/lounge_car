@@ -9,7 +9,8 @@ module OpenAiMagicGem
     attr_reader :parameters
 
     def initialize(args = {})
-      # TODO add validation for required
+      validate_function_arguments args
+
       @parameters = args
     end
 
@@ -48,6 +49,20 @@ module OpenAiMagicGem
             .gsub(/([a-z\d])([A-Z])/, '\1_\2')
             .tr("-", "_")
             .downcase
+    end
+
+    private
+
+    def validate_function_arguments(args)
+      parameters = self.class.definition[:parameters]
+
+      if parameters[:required].any? { |param| !args[param.to_sym] }
+        raise ArgumentError, "Missing required argument"
+      end
+
+      if args.any? { |name, value| !value.is_a? parameters[:properties][name.to_sym][:type] }
+        raise ArgumentError, "Wrong argument type"
+      end
     end
   end
 end
