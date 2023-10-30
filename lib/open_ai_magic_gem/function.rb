@@ -60,7 +60,7 @@ module OpenAiMagicGem
         raise ArgumentError, "Missing required argument"
       end
 
-      unless args.all? { |name, value| is_given_type(value, parameters[:properties][name.to_sym][:type]) }
+      unless parameters[:properties].all? { |name, val| !args[name] || is_given_type(args[name], val[:type]) }
         raise ArgumentError, "Wrong argument type"
       end
     end
