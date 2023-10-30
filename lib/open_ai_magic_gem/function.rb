@@ -22,7 +22,7 @@ module OpenAiMagicGem
       def definition
         @definition ||= {
           name: Function.to_snake_case(name),
-          description: "",
+          description: '',
           parameters: {
             type: :object,
             properties: {},
