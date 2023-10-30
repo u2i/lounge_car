@@ -29,7 +29,7 @@ class FooFunction
     parameter :end_date, :string, "Future end date of interest formatted as YYYY-MM-DD"
 
     def call
-       print "Hello. You've requested #{parameters[:start_time]} and #{parameters[:end_time]}"
+       print "Hello. You've requested #{parameters[:start_date]} and #{parameters[:end_date]}"
     end
 end
 ```
@@ -44,9 +44,9 @@ end
 
 ```
 OpenAiMagicGem.functions_definitions
-OpenAiMagicGem.function("BarFunction").definition
+OpenAiMagicGem.function("bar_function").definition
 BarFunction.definition
-OpenAiMagicGem.call_function("FooFunction", start_date: Date.today, end_date: Date.today + 2.days)
+OpenAiMagicGem.call_function("foo_function", start_date: Date.today.to_s, end_date: (Date.today + 2.days).to_s)
 ```
 
 ## Development
