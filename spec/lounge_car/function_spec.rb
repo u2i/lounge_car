@@ -21,8 +21,7 @@ class BarFunction
 
   def call
     greeting = parameters[:greeting] || 'Hello'
-    [greeting, parameters[:first_name], parameters[:last_name], parameters[:height],
-     parameters[:adult]].compact.join(' ')
+    [greeting, parameters[:first_name], parameters[:last_name], parameters[:height], parameters[:adult]].compact.join(' ')
   end
 end
 
@@ -37,7 +36,7 @@ RSpec.describe LoungeCar::Function do
 
   describe '#new' do
     it 'throws error when required argument is missing' do
-      expect { BarFunction.new(first_name: 'John') }.to raise_error(ArgumentError, 'Missing required argument')
+      expect { BarFunction.new(first_name: 'John') }.to raise_error(ArgumentError, "Missing required argument")
     end
 
     it 'throws error when argument has wrong type' do
@@ -45,17 +44,12 @@ RSpec.describe LoungeCar::Function do
       expect { BarFunction.new(first_name: true, adult: true) }.to raise_error(ArgumentError, 'Wrong argument type')
       expect { BarFunction.new(first_name: 'John', adult: 1) }.to raise_error(ArgumentError, 'Wrong argument type')
       expect { BarFunction.new(first_name: 'John', adult: 'true') }.to raise_error(ArgumentError, 'Wrong argument type')
-      expect do
-        BarFunction.new(first_name: 'John', adult: true, height: '3.75')
-      end.to raise_error(ArgumentError, 'Wrong argument type')
-      expect do
-        BarFunction.new(first_name: 'John', adult: true, height: true)
-      end.to raise_error(ArgumentError, 'Wrong argument type')
+      expect { BarFunction.new(first_name: 'John', adult: true, height: '3.75') }.to raise_error(ArgumentError, 'Wrong argument type')
+      expect { BarFunction.new(first_name: 'John', adult: true, height: true) }.to raise_error(ArgumentError, 'Wrong argument type')
     end
 
     it "doesn't check extra arguments" do
-      expect(BarFunction.new(first_name: 'John', adult: true, extra: 123,
-                             greeting: '1@#$%^&*9').call).to eq("1@\#$%^&*9 John true")
+      expect(BarFunction.new(first_name: 'John', adult: true, extra_1: 123, greeting: '1@#$%^&*9').call).to eq('1@#$%^&*9 John true')
     end
 
     it 'assigns passed arguments to parameters instance variable' do

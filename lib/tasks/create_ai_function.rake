@@ -2,7 +2,7 @@
 
 require "active_support/all"
 
-namespace :open_ai_magic_gem do
+namespace :lounge_car do
   desc "Creates a function seeable by ai"
   task :create_ai_function do
     function_name = ARGV[1]
@@ -15,7 +15,7 @@ namespace :open_ai_magic_gem do
 
     content = <<~TEMPLATE
       class #{class_name}
-        include OpenAiMagicGem::Function
+        include LoungeCar::AIFunction
 
         description "adds two numbers"
         parameter :first_number, :number, "First number to add", required: true
