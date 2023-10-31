@@ -16,7 +16,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ```
 class FooFunction
-    include LoungeCar::AIFunction
+    include LoungeCar::Function
 
     description "Function that do foo things"
     parameter :start_date, :string, "Future start date of interest formatted as YYYY-MM-DD", required: true
@@ -30,7 +30,7 @@ end
 
 ```
 class BarFunction
-    include LoungeCar::AIFunction
+    include LoungeCar::Function
 
     description "Function that do bar thing"
 end
