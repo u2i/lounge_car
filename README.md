@@ -11,36 +11,69 @@ If bundler is not being used to manage dependencies, install the gem by executin
     $ gem install lounge_car
 
 ## Usage
-
-`require 'lounge_car'`
-
+require gems
 ```
-class FooFunction
-    include LoungeCar::Function
+require 'openai'
+require 'lounge_car'
+```
 
-    description "Function that do foo things"
-    parameter :start_date, :string, "Future start date of interest formatted as YYYY-MM-DD", required: true
-    parameter :end_date, :string, "Future end date of interest formatted as YYYY-MM-DD"
+initialize them
+```
+OpenAI.configure do |config|
+https://github.com/alexrudall/ruby-openai/
+end
 
-    def call
-       print "Hello. You've requested #{parameters[:start_date]} and #{parameters[:end_date]}"
-    end
+LoungeCar.configure do |config|
+  config.model = 'choose your model, eg.: gpt-3.5-turbo-0613'
 end
 ```
-
+define functions
 ```
-class BarFunction
-    include LoungeCar::Function
+class GetWeather
+  extend LoungeCar::Function
 
-    description "Function that do bar thing"
+  set_description 'get weather in given location at given time (default time is today)'
+  add_parameter :location, true, type: :string, description: 'The city and state, e.g. San Francisco, CA'
+  add_parameter :date, false, type: :string, description: 'Future date of interest formatted as YYYY-MM-DD'
+  add_parameter :unit, true, type: :string, enum: %w[celsius fahrenheit]
+
+  def call(location, unit, date = nil)
+    date ||= Date.today
+    "20 degrees #{unit} and rain in #{location} on #{date}."
+  end
+end
+
+class GetTraffic
+  extend LoungeCar::Function
+
+  set_description 'get information about traffic jams in given location, at given time (default date_time in now)'
+  add_parameter :location, true, type: :string, description: 'The city and state, e.g. San Francisco, CA'
+  add_parameter :date_time, false, type: :string, description: 'date and time in format YYYY-MM-DD, HH:MM:SS'
+
+  def call(location, date_time = nil)
+    date_time ||= DateTime.now
+    "#{location} at #{date_time} will be stacked in jams."
+  end
 end
 ```
-
+You can group functions
 ```
-LoungeCar.functions_definitions
-LoungeCar.function("bar_function").definition
-BarFunction.definition
-LoungeCar.call_function("foo_function", start_date: Date.today.to_s, end_date: (Date.today + 2.days).to_s)
+class DefaultAiFunctions
+  extend LoungeCar::FunctionGroup
+
+  set_functions([GetTraffic, GetWeather])
+end
+```
+Talk with AI
+```
+client = LoungeCar::Client.new(DefaultAiFunctions)
+client.send_system_message('You are a helpful assistant')
+response = client.send_user_message('What is the weather like in San Francisco?')
+if response[:type] == :function_call
+  p client.send_function_result(response[:name], client.call_function(response))
+else
+  p response
+end
 ```
 
 ## Development

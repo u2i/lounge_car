@@ -1,22 +1,32 @@
 # frozen_string_literal: true
 
 require_relative 'lounge_car/version'
-require 'lounge_car/function'
+require_relative 'lounge_car/function'
+require_relative 'lounge_car/function_group'
+require_relative 'lounge_car/client'
 
 module LoungeCar
-  def self.functions
-    @functions ||= {}
+  class Configuration
+    attr_accessor :model
+
+    def initialize(model = nil)
+      @model = model
+    end
   end
 
-  def self.function(name)
-    functions[name] || raise(LoungeCar::FunctionNameError, "Unknown function class #{name}")
+  def self.configuration
+    @configuration ||= LoungeCar::Configuration.new
   end
 
-  def self.functions_definitions
-    functions.values.map(&:definition)
+  def self.configure
+    yield(configuration)
   end
 
-  def self.call_function(function_name, args)
-    function(function_name).new(args).call
+  def self.to_snake_case(string)
+    string.gsub(/::/, '_')
+          .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+          .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+          .tr('-', '_')
+          .downcase
   end
 end
