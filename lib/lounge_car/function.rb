@@ -2,10 +2,10 @@
 
 require 'active_support/all'
 
-module OpenAiMagicGem
+module LoungeCar
   class FunctionNameError < NameError; end
 
-  module Function
+  module AIFunction
     attr_reader :parameters
 
     def initialize(args = {})
@@ -15,14 +15,14 @@ module OpenAiMagicGem
     end
 
     def self.included(base)
-      OpenAiMagicGem.functions[to_snake_case(base.name)] = base
+      LoungeCar.functions[to_snake_case(base.name)] = base
       base.extend ClassMethods
     end
 
     module ClassMethods
       def definition
         @definition ||= {
-          name: Function.to_snake_case(name),
+          name: AIFunction.to_snake_case(name),
           description: '',
           parameters: {
             type: :object,

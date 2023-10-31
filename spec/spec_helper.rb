@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "open_ai_magic_gem"
+require "lounge_car"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

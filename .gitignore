@@ -10,7 +10,7 @@
 # rspec failure tracking
 .rspec_status
 
-open_ai_magic_gem-*.gem
+lounge_car_*.gem
 
 .idea
 

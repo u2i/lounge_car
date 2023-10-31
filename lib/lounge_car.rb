@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "open_ai_magic_gem/version"
-require "open_ai_magic_gem/function"
+require_relative "lounge_car/version"
+require "lounge_car/function"
 
-module OpenAiMagicGem
+module LoungeCar
   def self.functions
     @functions ||= {}
   end
 
   def self.function(name)
-    functions[name] || raise(OpenAiMagicGem::FunctionNameError, "Unknown function class #{name}")
+    functions[name] || raise(LoungeCar::FunctionNameError, "Unknown function class #{name}")
   end
 
   def self.functions_definitions

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FooFunction
-  include OpenAiMagicGem::Function
+  include LoungeCar::AIFunction
 
   description 'This is a test Foo function'
 
@@ -11,7 +11,7 @@ class FooFunction
 end
 
 class BarFunction
-  include OpenAiMagicGem::Function
+  include LoungeCar::AIFunction
 
   description 'This is a super useful Bar function that returns a greeting.'
   parameter :first_name, :string, 'Your first name', required: true
@@ -25,12 +25,12 @@ class BarFunction
   end
 end
 
-RSpec.describe OpenAiMagicGem::Function do
+RSpec.describe LoungeCar::AIFunction do
   describe '#included' do
-    it 'registers classes that include Function module' do
-      expect(OpenAiMagicGem.functions.size).to eq(2)
-      expect(OpenAiMagicGem.functions['foo_function']).to eq(FooFunction)
-      expect(OpenAiMagicGem.functions['bar_function']).to eq(BarFunction)
+    it 'registers classes that include AIFunction module' do
+      expect(LoungeCar.functions.size).to eq(2)
+      expect(LoungeCar.functions['foo_function']).to eq(FooFunction)
+      expect(LoungeCar.functions['bar_function']).to eq(BarFunction)
     end
   end
 
