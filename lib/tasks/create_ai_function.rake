@@ -15,7 +15,7 @@ namespace :lounge_car do
 
     content = <<~TEMPLATE
       class #{class_name}
-        include LoungeCar::AIFunction
+        include LoungeCar::Function
 
         description "adds two numbers"
         parameter :first_number, :number, "First number to add", required: true

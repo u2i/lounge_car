@@ -5,7 +5,7 @@ require 'active_support/all'
 module LoungeCar
   class FunctionNameError < NameError; end
 
-  module AIFunction
+  module Function
     attr_reader :parameters
 
     def initialize(args = {})
@@ -22,7 +22,7 @@ module LoungeCar
     module ClassMethods
       def definition
         @definition ||= {
-          name: AIFunction.to_snake_case(name),
+          name: Function.to_snake_case(name),
           description: '',
           parameters: {
             type: :object,
