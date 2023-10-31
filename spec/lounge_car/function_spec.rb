@@ -36,7 +36,7 @@ RSpec.describe LoungeCar::Function do
 
   describe '#new' do
     it 'throws error when required argument is missing' do
-      expect { BarFunction.new(first_name: 'John') }.to raise_error(ArgumentError, "Missing required argument")
+      expect { BarFunction.new(first_name: 'John') }.to raise_error(ArgumentError, 'Missing required argument')
     end
 
     it 'throws error when argument has wrong type' do

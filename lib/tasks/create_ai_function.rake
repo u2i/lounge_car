@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "active_support/all"
+require 'active_support/all'
 
 namespace :lounge_car do
-  desc "Creates a function seeable by ai"
+  desc 'Creates a function seeable by ai'
   task :create_ai_function do
     function_name = ARGV[1]
     class_name = function_name.camelize

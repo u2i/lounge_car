@@ -11,4 +11,4 @@ RuboCop::RakeTask.new
 
 task default: %i[spec rubocop]
 
-import "lib/tasks/create_ai_function.rake"
+import 'lib/tasks/create_ai_function.rake'
