@@ -11,7 +11,7 @@ RSpec.describe LoungeCar do
     described_class.instance_variable_set(:@functions, functions)
   end
 
-  it "has a version number" do
+  it 'has a version number' do
     expect(LoungeCar::VERSION).not_to be nil
   end
 
@@ -30,21 +30,21 @@ RSpec.describe LoungeCar do
 
     context 'when function does not exist' do
       it 'raises exception' do
-        expect { described_class.function('unknown') }.
-          to raise_error(LoungeCar::FunctionNameError, "Unknown function class unknown")
+        expect { described_class.function('unknown') }
+          .to raise_error(LoungeCar::FunctionNameError, 'Unknown function class unknown')
       end
     end
   end
 
   describe '#functions_definitions' do
     before do
-      expect(TestFunction).to receive(:definition).
-        and_return({ name: 'test_function', description: 'This is a test function' })
+      expect(TestFunction).to receive(:definition)
+        .and_return({ name: 'test_function', description: 'This is a test function' })
     end
 
     it 'returns an array of function definitions' do
-      expect(described_class.functions_definitions).
-        to eq([{ name: 'test_function', description: 'This is a test function' }])
+      expect(described_class.functions_definitions)
+        .to eq([{ name: 'test_function', description: 'This is a test function' }])
     end
   end
 

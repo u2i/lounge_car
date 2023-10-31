@@ -20,8 +20,9 @@ class BarFunction
   parameter :adult, :boolean, 'Are you adult', required: true
 
   def call
-    greeting = parameters[:greeting] ? parameters[:greeting] : 'Hello'
-    [greeting, parameters[:first_name], parameters[:last_name], parameters[:height], parameters[:adult]].compact.join(' ')
+    greeting = parameters[:greeting] || 'Hello'
+    [greeting, parameters[:first_name], parameters[:last_name], parameters[:height],
+     parameters[:adult]].compact.join(' ')
   end
 end
 
@@ -34,22 +35,27 @@ RSpec.describe LoungeCar::AIFunction do
     end
   end
 
-  describe "#new" do
+  describe '#new' do
     it 'throws error when required argument is missing' do
-      expect { BarFunction.new(first_name: 'John') }.to raise_error(ArgumentError, "Missing required argument")
+      expect { BarFunction.new(first_name: 'John') }.to raise_error(ArgumentError, 'Missing required argument')
     end
 
     it 'throws error when argument has wrong type' do
-      expect { BarFunction.new(first_name: 10, adult: true) }.to raise_error(ArgumentError, "Wrong argument type")
-      expect { BarFunction.new(first_name: true, adult: true) }.to raise_error(ArgumentError, "Wrong argument type")
-      expect { BarFunction.new(first_name: 'John', adult: 1) }.to raise_error(ArgumentError, "Wrong argument type")
-      expect { BarFunction.new(first_name: 'John', adult: 'true') }.to raise_error(ArgumentError, "Wrong argument type")
-      expect { BarFunction.new(first_name: 'John', adult: true, height: '3.75') }.to raise_error(ArgumentError, "Wrong argument type")
-      expect { BarFunction.new(first_name: 'John', adult: true, height: true) }.to raise_error(ArgumentError, "Wrong argument type")
+      expect { BarFunction.new(first_name: 10, adult: true) }.to raise_error(ArgumentError, 'Wrong argument type')
+      expect { BarFunction.new(first_name: true, adult: true) }.to raise_error(ArgumentError, 'Wrong argument type')
+      expect { BarFunction.new(first_name: 'John', adult: 1) }.to raise_error(ArgumentError, 'Wrong argument type')
+      expect { BarFunction.new(first_name: 'John', adult: 'true') }.to raise_error(ArgumentError, 'Wrong argument type')
+      expect do
+        BarFunction.new(first_name: 'John', adult: true, height: '3.75')
+      end.to raise_error(ArgumentError, 'Wrong argument type')
+      expect do
+        BarFunction.new(first_name: 'John', adult: true, height: true)
+      end.to raise_error(ArgumentError, 'Wrong argument type')
     end
 
     it "doesn't check extra arguments" do
-      expect(BarFunction.new(first_name: 'John', adult: true, extra_1: 123, greeting: '1@#$%^&*9').call).to eq("1@#$%^&*9 John true")
+      expect(BarFunction.new(first_name: 'John', adult: true, extra: 123,
+                             greeting: '1@#$%^&*9').call).to eq("1@\#$%^&*9 John true")
     end
 
     it 'assigns passed arguments to parameters instance variable' do
@@ -59,38 +65,38 @@ RSpec.describe LoungeCar::AIFunction do
     end
   end
 
-  describe "#definition" do
+  describe '#definition' do
     it 'produces a function description compliant with the OpenAI spec' do
-      expect(FooFunction.definition).
-        to eq(
-             {
-               name: 'foo_function',
-               description: 'This is a test Foo function',
-               parameters: {
-                 type: :object,
-                 properties: {},
-                 required: []
-               }
-             }
-           )
+      expect(FooFunction.definition)
+        .to eq(
+          {
+            name: 'foo_function',
+            description: 'This is a test Foo function',
+            parameters: {
+              type: :object,
+              properties: {},
+              required: []
+            }
+          }
+        )
 
-      expect(BarFunction.definition).
-        to eq(
-             {
-               name: 'bar_function',
-               description: 'This is a super useful Bar function that returns a greeting.',
-               parameters: {
-                 type: :object,
-                 properties: {
-                   first_name: { description: 'Your first name', type: :string },
-                   last_name: { description: 'Your last name', type: :string },
-                   height: { description: 'Your height (in meters)', type: :number },
-                   adult: { description: 'Are you adult', type: :boolean }
-                 },
-                 required: ['first_name', 'adult']
-               }
-             }
-           )
+      expect(BarFunction.definition)
+        .to eq(
+          {
+            name: 'bar_function',
+            description: 'This is a super useful Bar function that returns a greeting.',
+            parameters: {
+              type: :object,
+              properties: {
+                first_name: { description: 'Your first name', type: :string },
+                last_name: { description: 'Your last name', type: :string },
+                height: { description: 'Your height (in meters)', type: :number },
+                adult: { description: 'Are you adult', type: :boolean }
+              },
+              required: %w[first_name adult]
+            }
+          }
+        )
     end
   end
 end

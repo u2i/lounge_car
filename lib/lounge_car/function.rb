@@ -47,7 +47,7 @@ module LoungeCar
       string.gsub(/::/, '_')
             .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
             .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-            .tr("-", "_")
+            .tr('-', '_')
             .downcase
     end
 
@@ -57,11 +57,11 @@ module LoungeCar
       function_params = self.class.definition[:parameters]
 
       unless function_params[:required].all? { |param| args[param.to_sym] }
-        raise ArgumentError, "Missing required argument"
+        raise ArgumentError, 'Missing required argument'
       end
 
       unless function_params[:properties].all? { |name, val| !args[name] || is_given_type(args[name], val[:type]) }
-        raise ArgumentError, "Wrong argument type"
+        raise ArgumentError, 'Wrong argument type'
       end
     end
 

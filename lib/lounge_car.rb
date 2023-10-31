@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "lounge_car/version"
-require "lounge_car/function"
+require_relative 'lounge_car/version'
+require 'lounge_car/function'
 
 module LoungeCar
   def self.functions
