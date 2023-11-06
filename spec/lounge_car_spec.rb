@@ -2,7 +2,7 @@
 
 class TestFunction; end
 
-RSpec.describe OpenAiMagicGem do
+RSpec.describe LoungeCar do
   let(:functions) do
     { 'test_function' => TestFunction }
   end
@@ -11,8 +11,8 @@ RSpec.describe OpenAiMagicGem do
     described_class.instance_variable_set(:@functions, functions)
   end
 
-  it "has a version number" do
-    expect(OpenAiMagicGem::VERSION).not_to be nil
+  it 'has a version number' do
+    expect(LoungeCar::VERSION).not_to be nil
   end
 
   describe '#functions' do
@@ -30,21 +30,21 @@ RSpec.describe OpenAiMagicGem do
 
     context 'when function does not exist' do
       it 'raises exception' do
-        expect { described_class.function('unknown') }.
-          to raise_error(OpenAiMagicGem::FunctionNameError, "Unknown function class unknown")
+        expect { described_class.function('unknown') }
+          .to raise_error(LoungeCar::FunctionNameError, 'Unknown function class unknown')
       end
     end
   end
 
   describe '#functions_definitions' do
     before do
-      expect(TestFunction).to receive(:definition).
-        and_return({ name: 'test_function', description: 'This is a test function' })
+      expect(TestFunction).to receive(:definition)
+        .and_return({ name: 'test_function', description: 'This is a test function' })
     end
 
     it 'returns an array of function definitions' do
-      expect(described_class.functions_definitions).
-        to eq([{ name: 'test_function', description: 'This is a test function' }])
+      expect(described_class.functions_definitions)
+        .to eq([{ name: 'test_function', description: 'This is a test function' }])
     end
   end
 
