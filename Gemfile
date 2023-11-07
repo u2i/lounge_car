@@ -5,5 +5,5 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in lounge_car.gemspec
 gemspec
 
-gem 'activesupport'
+gem 'rails'
 gem 'ruby-openai'
