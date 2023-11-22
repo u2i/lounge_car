@@ -1,0 +1,12 @@
+<%= form_with url: send_message_chat_path, data: { turbo_frame: "messages" } do |form| %>
+  <%= form.text_field :content, style: "width: 90%" %>
+  <%= form.submit data: { turbo: true } %>
+<% end %>
+
+<hr>
+
+<%= turbo_frame_tag "messages", style: "display: flex; flex-direction: column-reverse" do %>
+  <% @chat.messages.each do |message| %>
+    <%= render message %>
+  <% end %>
+<% end %>
