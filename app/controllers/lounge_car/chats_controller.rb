@@ -14,7 +14,6 @@ module LoungeCar
     def send_message
       @chat.send_user_message(params[:content])
 
-      # head :ok
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace('new_message', partial: 'lounge_car/messages/form')

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class Message < ApplicationRecord
-  after_create_commit -> { broadcast_append_to 'messages', partial: 'lounge_car/messages/message' }
+  include LoungeCar::Message
+  after_create_commit :create_message_on_ui
+  after_update_commit :update_message_on_ui
   default_scope { order(created_at: :asc) }
   belongs_to :chat
   enum role: { system: 0, assistant: 1, user: 2, function: 3 }
-
-  def to_gpt_format
-    { role: role, content: content }.merge(data)
-  end
 end

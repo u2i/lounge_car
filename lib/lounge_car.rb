@@ -3,14 +3,16 @@
 require 'lounge_car/version'
 require 'lounge_car/engine'
 require 'lounge_car/function'
+require 'lounge_car/message'
 require 'lounge_car/chat'
 
 module LoungeCar
   class Configuration
-    attr_accessor :model
+    attr_accessor :model, :functions
 
-    def initialize(model = nil)
+    def initialize(model = nil, functions = [])
       @model = model
+      @functions = functions
     end
   end
 
@@ -28,5 +30,17 @@ module LoungeCar
           .gsub(/([a-z\d])([A-Z])/, '\1_\2')
           .tr('-', '_')
           .downcase
+  end
+
+  def self.functions
+    configuration.functions.map(&:constantize)
+  end
+
+  def self.function(function_name)
+    functions.find { |f| f.function_name == function_name }
+  end
+
+  def self.model
+    configuration.model
   end
 end

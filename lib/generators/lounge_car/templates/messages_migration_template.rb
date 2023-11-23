@@ -5,7 +5,7 @@ class LoungeCarCreateMessages < ActiveRecord::Migration<%= migration_version %>
     create_table :messages do |t|
       t.integer 'role', default: 0, null: false
       t.string 'content'
-      t.json 'data'
+      t.json 'function_call'
       t.references :chat, null: false, foreign_key: true
       t.timestamps null: false
     end
