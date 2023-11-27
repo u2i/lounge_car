@@ -13,3 +13,79 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+    background-color: #F1F2F2FF;
+    margin: 0;
+    font-family: infra,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-weight: 300;
+}
+
+img, svg {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+}
+
+#messages {
+    display: block;
+    max-height: calc(100vh - 100px);
+    overflow-y: scroll;
+}
+
+.message {
+    display: flex;
+    column-gap: 24px;
+    padding: 20px 500px;
+}
+
+.user-message svg {
+    background-color: rgb(194, 18, 91);
+}
+
+.assistant-message {
+    background-color: white;
+}
+
+.assistant-message img {
+    background-color: #F1F2F2FF;
+}
+
+#new_message {
+    position: absolute;
+    bottom: 32px;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#new_message form {
+    display: flex;
+    background-color: white;
+    padding: 12px;
+    border-radius: 16px;
+}
+
+#new_message form input#content {
+    width: 900px;
+    border: none;
+    font: inherit;
+}
+
+#new_message form input#content:focus {
+    outline: none;
+}
+
+#new_message form button {
+    padding: 2px;
+    background-color: #005392FF;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#new_message form button:hover {
+    background-color: #3189C9FF;
+}
