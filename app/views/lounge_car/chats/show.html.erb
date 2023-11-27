@@ -1,4 +1,4 @@
-<%= turbo_stream_from "messages" %>
+<%= turbo_stream_from @chat, "messages" %>
 
 <%= turbo_frame_tag @chat do %>
   <%= turbo_frame_tag "messages" do %>
