@@ -12,7 +12,7 @@ module LoungeCar
     end
 
     def send_message
-      @chat.send_user_message(params[:content])
+      CallGptJob.perform_later(@chat, params[:content])
 
       respond_to do |format|
         format.turbo_stream do
