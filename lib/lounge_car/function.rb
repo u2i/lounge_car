@@ -8,19 +8,12 @@ module LoungeCar
     private
 
     def render(partial, locals, response = '')
-      raise StandardError if @action
-
       @action = :render
       @partial = partial
       @locals = locals
-      @response = response || 'function called'
-
     end
 
     def respond(response)
-      raise StandardError if @action
-
-      @action = :respond
       @response = response
     end
 

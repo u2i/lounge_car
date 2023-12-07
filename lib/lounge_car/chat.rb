@@ -78,13 +78,8 @@ module LoungeCar
       arguments = function_class.instance_method(:call).parameters.map { |_, name| function_arguments[name.to_s] }
       function = function_class.new
       function.call(*arguments)
-      if function.action == :respond
-        send_function_result(function_data['name'], function.response)
-      elsif function.action == :render
-        display_partial(function_data['name'], function)
-      else
-        raise StandardError
-      end
+      display_partial(function.partial, function.locals) if function.action == :render
+      send_function_result(function_data['name'], function.response)
     end
 
     def send_function_result(function_name, message)
@@ -92,9 +87,8 @@ module LoungeCar
       send_message
     end
 
-    def display_partial(function_name, function)
-      messages.create(role: :function, content: function.response.to_s, function_call: { name: function_name })
-      Turbo::StreamsChannel.broadcast_append_to self, target: 'messages', partial: function.partial, locals: function.locals
+    def display_partial(partial, locals)
+      Turbo::StreamsChannel.broadcast_append_to self, target: 'messages', partial: partial, locals: locals
     end
   end
 end

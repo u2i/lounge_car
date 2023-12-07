@@ -15,3 +15,9 @@
     <%= message.content %>
   <% end %>
 <% end %>
+
+<% if message.role == 'function' %>
+  <%= turbo_frame_tag message, class: "message function-message" do %>
+    [Resource outdated]
+  <% end %>
+<% end %>
