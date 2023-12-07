@@ -14,18 +14,6 @@ module LoungeCar
       messages.create(role: :system, content: message, function_call: {})
     end
 
-    def send_function_result(function_name, message)
-      messages.create(role: :function, content: message.to_s, function_call: { name: function_name })
-      send_message
-    end
-
-    def call_function(function_data)
-      function = LoungeCar.function(function_data['name'])
-      function_arguments = JSON.parse(function_data['arguments'])
-      arguments = function.instance_method(:call).parameters.map { |_, name| function_arguments[name.to_s] }
-      function.new.call(*arguments)
-    end
-
     private
 
     def send_message
@@ -75,13 +63,38 @@ module LoungeCar
     def after_message(finish_reason)
       case finish_reason
       when 'function_call'
-        send_function_result(@message.function_call['name'], call_function(@message.function_call))
+        call_function(@message.function_call)
       when 'stop'
         # nothing to do
       else
         # length / content_filter
         raise StandardError
       end
+    end
+
+    def call_function(function_data)
+      function_class = LoungeCar.function(function_data['name'])
+      function_arguments = JSON.parse(function_data['arguments'])
+      arguments = function_class.instance_method(:call).parameters.map { |_, name| function_arguments[name.to_s] }
+      function = function_class.new
+      function.call(*arguments)
+      if function.action == :respond
+        send_function_result(function_data['name'], function.response)
+      elsif function.action == :render
+        display_partial(function_data['name'], function)
+      else
+        raise StandardError
+      end
+    end
+
+    def send_function_result(function_name, message)
+      messages.create(role: :function, content: message.to_s, function_call: { name: function_name })
+      send_message
+    end
+
+    def display_partial(function_name, function)
+      messages.create(role: :function, content: function.response.to_s, function_call: { name: function_name })
+      Turbo::StreamsChannel.broadcast_append_to [self, 'messages'], target: 'messages', partial: function.partial, locals: function.locals
     end
   end
 end
