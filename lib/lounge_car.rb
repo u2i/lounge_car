@@ -8,11 +8,12 @@ require 'lounge_car/chat'
 
 module LoungeCar
   class Configuration
-    attr_accessor :model, :functions
+    attr_accessor :model, :functions, :configuration_message
 
-    def initialize(model = nil, functions = [])
+    def initialize(model = nil, functions = [], configuration_message = '')
       @model = model
       @functions = functions
+      @configuration_message = configuration_message
     end
   end
 
@@ -42,5 +43,9 @@ module LoungeCar
 
   def self.model
     configuration.model
+  end
+
+  def self.configuration_message
+    configuration.configuration_message
   end
 end

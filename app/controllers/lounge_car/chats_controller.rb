@@ -12,6 +12,7 @@ module LoungeCar
     end
 
     def send_message
+      @chat.send_system_message LoungeCar.configuration_message if @chat.messages.empty?
       CallGptJob.perform_later(@chat, params[:content])
 
       respond_to do |format|
