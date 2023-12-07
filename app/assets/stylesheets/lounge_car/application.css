@@ -14,6 +14,19 @@
  *= require_self
  */
 
+.button-primary {
+    padding: 2px;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.button-primary svg {
+    width: 24px;
+    height: 24px;
+}
+
 body {
     background-color: #F1F2F2FF;
     margin: 0;
@@ -36,14 +49,14 @@ img, svg {
 .message {
     display: flex;
     column-gap: 24px;
-    padding: 20px 500px;
+    padding: 20px 25vw;
 }
 
 .user-message svg {
     background-color: rgb(194, 18, 91);
 }
 
-.assistant-message {
+.assistant-message, .function-message {
     background-color: white;
 }
 
@@ -78,12 +91,7 @@ img, svg {
 }
 
 #new_message form button {
-    padding: 2px;
     background-color: #005392FF;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
 }
 
 #new_message form button:hover {

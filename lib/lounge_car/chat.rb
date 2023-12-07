@@ -94,7 +94,7 @@ module LoungeCar
 
     def display_partial(function_name, function)
       messages.create(role: :function, content: function.response.to_s, function_call: { name: function_name })
-      Turbo::StreamsChannel.broadcast_append_to [self, 'messages'], target: 'messages', partial: function.partial, locals: function.locals
+      Turbo::StreamsChannel.broadcast_append_to self, target: 'messages', partial: function.partial, locals: function.locals
     end
   end
 end

@@ -11,13 +11,13 @@ module LoungeCar
 
     def create_message_on_ui
       if %w[user assistant].include? role
-        broadcast_append_to [chat, 'messages'], partial: 'lounge_car/messages/message'
+        broadcast_append_to chat, partial: 'lounge_car/messages/message'
       end
     end
 
     def update_message_on_ui
       if %w[user assistant].include? role
-        broadcast_replace_to [chat, 'messages'], partial: 'lounge_car/messages/message'
+        broadcast_replace_to chat, partial: 'lounge_car/messages/message'
       end
     end
   end
