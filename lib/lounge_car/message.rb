@@ -4,8 +4,8 @@ module LoungeCar
   module Message
     def to_gpt_format
       message = { role: role, content: content }
-      message = message.merge(function_call) if role == 'function'
-      message = message.merge({ function_call: function_call }) if role == 'assistant' && function_call.any?
+      message[:name] = function_call['name'] if role == 'function'
+      message[:function_call] = function_call if role == 'assistant' && function_call.any?
       message
     end
 

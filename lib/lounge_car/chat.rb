@@ -4,6 +4,7 @@ require 'openai'
 
 module LoungeCar
   module Chat
+    FUNCTION_RESPONSE_LENGTH_LIMIT = 200
 
     def send_user_message(message)
       messages.create(role: :user, content: message, function_call: {})
@@ -73,22 +74,34 @@ module LoungeCar
     end
 
     def call_function(function_data)
-      function_class = LoungeCar.function(function_data['name'])
-      function_arguments = JSON.parse(function_data['arguments'])
-      arguments = function_class.instance_method(:call).parameters.map { |_, name| function_arguments[name.to_s] }
-      function = function_class.new
-      function.call(*arguments)
-      display_partial(function.partial, function.locals) if function.action == :render
-      send_function_result(function_data['name'], function.response)
+      function = LoungeCar.function(function_data['name']).new
+      function.call(*function_arguments(function_data))
+      render_function(function) if function.action == :render
+      send_function_message(function)
     end
 
-    def send_function_result(function_name, message)
-      messages.create(role: :function, content: message.to_s, function_call: { name: function_name })
+    def function_arguments(data)
+      function = LoungeCar.function(data['name'])
+      arguments = JSON.parse(data['arguments'])
+      function.instance_method(:call).parameters.map { |_, name| arguments[name.to_s] }
+    end
+
+    def render_function(function)
+      broadcast_append target: 'messages', partial: function.partial, locals: function.locals
+    end
+
+    def send_function_message(function)
+      message = messages.create(
+        role: :function,
+        content: function.response.to_s,
+        function_call: { name: function.class.function_name, renderable: function.action == :render }
+      )
       send_message
-    end
-
-    def display_partial(partial, locals)
-      Turbo::StreamsChannel.broadcast_append_to self, target: 'messages', partial: partial, locals: locals
+      if message.content.length > FUNCTION_RESPONSE_LENGTH_LIMIT
+        message.update(
+          content: 'Function result is lenghty. Call the function again if you still need these information.'
+        )
+      end
     end
   end
 end
