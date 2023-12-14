@@ -4,10 +4,11 @@ module LoungeCar
   module Function
 
     attr_reader :action, :response, :partial, :locals
+    attr_accessor :chat
 
     private
 
-    def render(partial, locals, response = '')
+    def render(partial, locals)
       @action = :render
       @partial = partial
       @locals = locals
