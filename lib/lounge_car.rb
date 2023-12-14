@@ -8,13 +8,11 @@ require 'lounge_car/chat'
 
 module LoungeCar
   class Configuration
-    attr_accessor :model, :functions, :configuration_message
+    attr_accessor :model, :functions, :current_warden_method, :warden
+  end
 
-    def initialize(model = nil, functions = [], configuration_message = '')
-      @model = model
-      @functions = functions
-      @configuration_message = configuration_message
-    end
+  class << self
+    delegate :model, :warden, :to => :configuration
   end
 
   def self.configuration
@@ -41,11 +39,7 @@ module LoungeCar
     functions.find { |f| f.function_name == function_name }
   end
 
-  def self.model
-    configuration.model
-  end
-
-  def self.configuration_message
-    configuration.configuration_message
+  def self.current_warden(context)
+    configuration.current_warden_method.call(context)
   end
 end
