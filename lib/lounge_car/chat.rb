@@ -4,6 +4,7 @@ require 'openai'
 
 module LoungeCar
   module Chat
+    FUNCTION_RESPONSE_LENGTH_LIMIT = 200
 
     def send_user_message(message)
       messages.create(role: :user, content: message, function_call: {})
@@ -12,18 +13,6 @@ module LoungeCar
 
     def send_system_message(message)
       messages.create(role: :system, content: message, function_call: {})
-    end
-
-    def send_function_result(function_name, message)
-      messages.create(role: :function, content: message.to_s, function_call: { name: function_name })
-      send_message
-    end
-
-    def call_function(function_data)
-      function = LoungeCar.function(function_data['name'])
-      function_arguments = JSON.parse(function_data['arguments'])
-      arguments = function.instance_method(:call).parameters.map { |_, name| function_arguments[name.to_s] }
-      function.new.call(*arguments)
     end
 
     private
@@ -75,12 +64,43 @@ module LoungeCar
     def after_message(finish_reason)
       case finish_reason
       when 'function_call'
-        send_function_result(@message.function_call['name'], call_function(@message.function_call))
+        call_function(@message.function_call)
       when 'stop'
         # nothing to do
       else
         # length / content_filter
         raise StandardError
+      end
+    end
+
+    def call_function(function_data)
+      function = LoungeCar.function(function_data['name']).new
+      function.call(*function_arguments(function_data))
+      render_function(function) if function.action == :render
+      send_function_message(function)
+    end
+
+    def function_arguments(data)
+      function = LoungeCar.function(data['name'])
+      arguments = JSON.parse(data['arguments'])
+      function.instance_method(:call).parameters.map { |_, name| arguments[name.to_s] }
+    end
+
+    def render_function(function)
+      broadcast_append target: 'messages', partial: function.partial, locals: function.locals
+    end
+
+    def send_function_message(function)
+      message = messages.create(
+        role: :function,
+        content: function.response.to_s,
+        function_call: { name: function.class.function_name, renderable: function.action == :render }
+      )
+      send_message
+      if message.content.length > FUNCTION_RESPONSE_LENGTH_LIMIT
+        message.update(
+          content: 'Function result is lenghty. Call the function again if you still need these information.'
+        )
       end
     end
   end
