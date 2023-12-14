@@ -17,6 +17,24 @@ module LoungeCar
     end
 
     def send_message
+#       message1 = <<TEXT
+# You are a helpful assistant in HR organization.
+# Try to respond shortly, do not write obvious facts and do not dream up information.
+# If you cannot help, offer creating a draft message to support department.
+# You are talking with #{@chat.user.first_name} #{@chat.user.last_name}, they have #{@chat.user.role} role.
+# TEXT
+#
+#       message2 = <<TEXT
+# When creating e-mail on specific subject, try to obtain and include important information.
+# [{"subject": "Incorrect PTO balance", "required_information": ["Which PTO type/bank?", "What is the current balance?", "What should the correct balance be?"]},
+# {"subject": "Missed hours from previous pay period", "required_information": ["Which pay period is in question?", "How many hours are missing?", "On what days did these hours occur?"]}]
+# When writing about any other subject, ask employee about all information they claim useful.
+# TEXT
+#       if @chat.messages.empty?
+#         @chat.send_system_message message1
+#         @chat.send_system_message message2
+#       end
+
       @chat.send_system_message @chat.configuration_message if @chat.messages.empty?
       CallGptJob.perform_later(@chat, params[:content])
 
