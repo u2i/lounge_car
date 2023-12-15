@@ -74,8 +74,7 @@ module LoungeCar
     end
 
     def call_function(function_data)
-      function = LoungeCar.function(function_data['name']).new
-      function.chat = self
+      function = LoungeCar.function(function_data['name']).new(self)
       function.call(*function_arguments(function_data))
       render_function(function) if function.action == :render
       send_function_message(function)

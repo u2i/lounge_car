@@ -6,9 +6,13 @@ module LoungeCar
     attr_reader :action, :response, :partial, :locals
     attr_accessor :chat
 
+    def initialize(chat)
+      @chat = chat
+    end
+
     private
 
-    def render(partial, locals)
+    def render(partial, locals = {})
       @action = :render
       @partial = partial
       @locals = locals

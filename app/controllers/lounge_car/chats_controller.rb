@@ -35,7 +35,17 @@ module LoungeCar
 #         @chat.send_system_message message2
 #       end
 
-      @chat.send_system_message @chat.configuration_message if @chat.messages.empty?
+      if @chat.messages.empty?
+        @chat.send_system_message @chat.configuration_message
+        LoungeCar.functions.each do |func_class|
+          func = func_class.new(@chat)
+          system_message = func.respond_to?(:system_message) ? func.system_message : nil
+          if system_message
+            @chat.send_system_message("Instruction for #{func_class.function_name}: #{system_message}")
+          end
+        end
+      end
+
       CallGptJob.perform_later(@chat, params[:content])
 
       respond_to do |format|
