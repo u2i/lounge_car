@@ -41,7 +41,7 @@ module LoungeCar
           func = func_class.new(@chat)
           system_message = func.respond_to?(:system_message) ? func.system_message : nil
           if system_message
-            @chat.send_system_message("Instruction for #{func_class.function_name}: #{system_message}")
+            @chat.send_system_message("Instruction for #{func_class.function_name} function: #{system_message}")
           end
         end
       end
