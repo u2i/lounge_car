@@ -18,6 +18,8 @@ module LoungeCar
     private
 
     def send_message
+      update(input: input + OpenAI.rough_token_count(messages.map(&:to_gpt_format).to_s + LoungeCar.functions.map(&:to_gpt_format).to_s))
+
       OpenAI::Client.new.chat(
         parameters: {
           model: LoungeCar.model,
@@ -37,11 +39,11 @@ module LoungeCar
         finish_reason = chunk.dig('choices', 0, 'finish_reason')
         after_message(finish_reason) unless finish_reason.nil?
 
-        chunk = chunk.dig('choices', 0, 'delta')
-        next unless chunk
+        choices_chunk = chunk.dig('choices', 0, 'delta')
+        next unless choices_chunk
 
-        on_content_chunk(chunk) if chunk['content']
-        on_function_chunk(chunk['function_call']) if chunk['function_call']
+        on_content_chunk(choices_chunk) if choices_chunk['content']
+        on_function_chunk(choices_chunk['function_call']) if choices_chunk['function_call']
       end
     end
 
@@ -57,11 +59,12 @@ module LoungeCar
       function_call = @message.function_call == {} ? { 'name' => '', 'arguments' => '' } : @message.function_call
       function_call['name'] += chunk['name'].to_s
       function_call['arguments'] += chunk['arguments'].to_s
-
       @message.update(function_call: function_call)
     end
 
     def after_message(finish_reason)
+      @message.chat.update(output: @message.chat.output + OpenAI.rough_token_count(@message.content))
+
       case finish_reason
       when 'function_call'
         call_function(@message.function_call)
