@@ -97,3 +97,14 @@ img, svg {
 #new_message form button:hover {
     background-color: #3189C9FF;
 }
+
+#chat_cost {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    color: rgb(255, 0, 0, 0.7);
+    font-weight: 800;
+}

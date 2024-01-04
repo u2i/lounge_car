@@ -1,0 +1,4 @@
+<%= turbo_frame_tag "chat_cost" do %>
+  <div>total chat cost:</div>
+    <div><%= number_to_currency(chat.input * 0.00001 + chat.output * 0.00003) %></div>
+<% end %>

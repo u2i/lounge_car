@@ -17,6 +17,10 @@ module LoungeCar
 
     private
 
+    def update_chat_cost_on_ui
+      broadcast_replace_to self, target: 'chat_cost', partial: 'lounge_car/chats/cost'
+    end
+
     def send_message
       update(input: input + OpenAI.rough_token_count(messages.map(&:to_gpt_format).to_s + LoungeCar.functions.map(&:to_gpt_format).to_s))
 

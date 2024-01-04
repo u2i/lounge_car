@@ -2,6 +2,7 @@
 
 class Chat < ApplicationRecord
   include LoungeCar::Chat
+  after_update_commit :update_chat_cost_on_ui
 
   has_many :messages, dependent: :destroy
 
