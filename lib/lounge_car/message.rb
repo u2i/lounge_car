@@ -9,6 +9,8 @@ module LoungeCar
       message
     end
 
+    private
+
     def create_message_on_ui
       if %w[user assistant].include? role
         broadcast_append_to chat, partial: 'lounge_car/messages/message'
