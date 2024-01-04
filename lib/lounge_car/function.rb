@@ -18,7 +18,7 @@ module LoungeCar
       @locals = locals
     end
 
-    def respond(response)
+    def respond_with(response)
       @response = response
     end
 
