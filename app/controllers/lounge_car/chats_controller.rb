@@ -2,9 +2,15 @@
 
 module LoungeCar
   class ChatsController < ApplicationController
-    before_action :set_chat, except: :create
+    before_action :set_chat, except: [:index, :create]
 
-    def show; end
+    def index
+      @chats = ::Chat.all.order(:id)
+    end
+
+    def show;
+      @chats = ::Chat.all.order(:id)
+    end
 
     def create
       @chat = ::Chat.new

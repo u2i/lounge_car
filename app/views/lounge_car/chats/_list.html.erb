@@ -1,0 +1,7 @@
+<ul style="background-color: #31479d; max-width: 200px;">
+<% chats.each do |chat| %>
+  <li style="list-style-type: none; padding: 4px;">
+    <%= link_to "Chat #{chat.id}", chat_path(chat), style: "text-decoration: none; color: #ccc" %>
+  </li>
+<% end %>
+</ul>
