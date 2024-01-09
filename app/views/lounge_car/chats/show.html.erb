@@ -1,7 +1,7 @@
 <%= turbo_stream_from @chat %>
 
 <%= turbo_frame_tag @chat do %>
-  <%= turbo_frame_tag "messages", data: { controller: "scroll", action: "turbo:before-stream-render@document->scroll#scrollToBottom" } do %>
+  <%= turbo_frame_tag "messages", data: { controller: "scroll", action: "turbo:before-stream-render@document->scroll#throttledScroll" } do %>
     <% @chat.messages.each do |message| %>
       <%= render message %>
     <% end %>
