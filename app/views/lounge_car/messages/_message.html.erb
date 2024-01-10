@@ -1,6 +1,6 @@
 <% if message.role == 'assistant' %>
   <%= turbo_frame_tag message, class: "message assistant-message", style: ("display: none" unless message.content.present?) do %>
-    <%= image_tag "pplogo.png", alt: "Positively Partners logo" %>
+    <%= image_tag "pplogo.png", width: 24, height: 24, alt: "Positively Partners logo" %>
 
     <div><%= simple_format(message.content) %></div>
   <% end %>
