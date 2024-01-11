@@ -141,19 +141,22 @@ img, svg {
 #sidebar button {
     cursor: pointer;
     background-color: unset;
-    color: #ccc;
-    padding: 0;
+    color: #CCCCCC;
     border: none;
-    line-height: 0;
-    margin: 0 82px;
-}
-
-#sidebar button svg {
-    width: 35px;
-    height: 35px;
     padding: 0;
+    line-height: 0;
 }
 
 #sidebar button:hover {
     color: white;
+}
+
+#sidebar #new_chat {
+    margin: 0 82px;
+}
+
+#sidebar #log_out {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
