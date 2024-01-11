@@ -44,6 +44,7 @@ img, svg {
     display: block;
     max-height: calc(100vh - 100px);
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 .message {
