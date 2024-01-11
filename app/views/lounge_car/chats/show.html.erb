@@ -1,15 +1,11 @@
-<%= turbo_stream_from @chat %>
+<%= render "sidebar" %>
 
-<div>
-  <%= render 'list', chats: @chats %>
+<%= turbo_frame_tag "chat" do %>
+  <%= turbo_stream_from @chat %>
 
-  <%= turbo_frame_tag @chat do %>
-    <%= turbo_frame_tag "messages", data: { controller: "scroll", action: "turbo:before-stream-render@document->scroll#throttledScroll" } do %>
-      <% @chat.messages.each do |message| %>
-        <%= render message %>
-      <% end %>
-    <% end %>
-
-    <%= render "lounge_car/messages/form" %>
+  <%= turbo_frame_tag "messages", data: { controller: "scroll", action: "turbo:before-stream-render@document->scroll#throttledScroll" } do %>
+    <%= render @chat.messages %>
   <% end %>
-</div>
+
+  <%= render "lounge_car/messages/form" %>
+<% end %>
