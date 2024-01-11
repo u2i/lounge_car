@@ -44,6 +44,7 @@ img, svg {
     display: block;
     max-height: calc(100vh - 100px);
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 .message {
@@ -68,7 +69,7 @@ img, svg {
     position: absolute;
     bottom: 32px;
     right: 0;
-    left: 0;
+    left: 200px;
     display: flex;
     justify-content: center;
 }
@@ -107,4 +108,51 @@ img, svg {
     padding: 10px;
     color: rgb(255, 0, 0, 0.7);
     font-weight: 800;
+
+#sidebar {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    background-color: #505050;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+#sidebar ul li {
+    padding: 5px;
+}
+
+#sidebar ul li a {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+
+#sidebar ul li a:hover {
+    color: white;
+}
+
+#sidebar button {
+    cursor: pointer;
+    background-color: unset;
+    color: #ccc;
+    padding: 0;
+    border: none;
+    line-height: 0;
+    margin: 0 82px;
+}
+
+#sidebar button svg {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+}
+
+#sidebar button:hover {
+    color: white;
 }
