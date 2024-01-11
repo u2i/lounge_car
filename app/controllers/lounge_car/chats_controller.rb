@@ -2,16 +2,19 @@
 
 module LoungeCar
   class ChatsController < ApplicationController
-    before_action :set_chat, except: :create
+    before_action :set_chat, except: %i[create index]
 
-    def show; end
+    def index
+      chats = find_chats
+      redirect_to chats.any? ? chats.last : create_chat
+    end
+
+    def show
+      @chats = find_chats
+    end
 
     def create
-      @chat = ::Chat.new
-      @chat.send("#{LoungeCar.warden}=", LoungeCar.current_warden(self)) if LoungeCar.warden
-      @chat.save!
-
-      redirect_to @chat
+      redirect_to create_chat
     end
 
     def send_message
@@ -40,6 +43,19 @@ module LoungeCar
 
     def set_chat
       @chat = ::Chat.find(params[:id])
+    end
+
+    def create_chat
+      chat = ::Chat.new
+      chat.send("#{LoungeCar.warden}=", LoungeCar.current_warden(self)) if LoungeCar.warden
+      chat.save!
+      chat
+    end
+
+    def find_chats
+      chats = ::Chat.all
+      chats = chats.where("#{LoungeCar.warden}": LoungeCar.current_warden(self)) if LoungeCar.warden
+      chats.order(:id)
     end
   end
 end
