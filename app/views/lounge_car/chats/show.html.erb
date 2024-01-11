@@ -1,5 +1,7 @@
 <%= render "sidebar" %>
 
+<%= render "lounge_car/chats/cost", chat: @chat %>
+
 <%= turbo_frame_tag "chat" do %>
   <%= turbo_stream_from @chat %>
 
