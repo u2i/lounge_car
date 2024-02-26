@@ -55,7 +55,7 @@ module LoungeCar
     def find_chats
       chats = ::Chat.all
       chats = chats.where("#{LoungeCar.warden}": LoungeCar.current_warden(self)) if LoungeCar.warden
-      chats.order(:id)
+      chats.order(id: :desc)
     end
   end
 end
